@@ -1,0 +1,48 @@
+services:
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: localhost123
+      POSTGRES_DB: gastosresidenciais_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d gastosresidenciais_db || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sail
+
+  frontend:
+    build:
+      context: ./spa
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./spa/docker:/usr/src/app/docker
+      - ./spa/public:/usr/src/app/public
+      - ./spa/src:/usr/src/app/src
+      - ./spa/vite.config.ts:/usr/src/app/vite.config.ts
+      - ./spa/.env:/usr/src/app/.env
+      - /usr/src/app/node_modules
+    networks:
+      - sail
+    environment:
+      VITE_BASE_URL: https://localhost:7218
+      NODE_ENV: development
+    image: react-spa
+
+networks:
+  sail:
+    driver: bridge
+
+volumes:
+  db:
+    driver: local
