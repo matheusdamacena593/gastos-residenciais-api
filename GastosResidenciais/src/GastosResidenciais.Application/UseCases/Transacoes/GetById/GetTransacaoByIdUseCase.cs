@@ -10,11 +10,11 @@ namespace GastosResidenciais.Application.UseCases.Transacoes.GetById
 {
     public class GetTransacaoByIdUseCase : IGetTransacaoByIdUseCase
     {
-        private readonly ITrancasaoReadOnlyRepository _repository;
+        private readonly ITransacaoReadOnlyRepository _repository;
         private readonly IMapper _mapper;
 
         public GetTransacaoByIdUseCase(
-            ITrancasaoReadOnlyRepository repository,
+            ITransacaoReadOnlyRepository repository,
             IMapper mapper)
         {
             _repository = repository;

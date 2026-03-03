@@ -15,21 +15,28 @@ namespace GastosResidenciais.Application.UseCases.Relatorios.GetTotaisCategorias
             _mapper = mapper;
         }
 
-        public async Task<ResponseTotaisCategoriasJson> Execute()
+        public async Task<ResponseTotaisCategoriasJson> Execute(int page, int pageSize)
         {
-            var categorias = await _repository.GetCategoriasTotaisAsync();
+            var pageResult = await _repository.GetCategoriasTotaisPaginadoAsync(page, pageSize);
+            var totaisGerais = await _repository.GetTotaisGeraisCategoriasAsync();
 
-            var lista = _mapper.Map<List<ResponseTotalCategoriaJson>>(categorias);
+            var listaJson = _mapper.Map<List<ResponseTotalCategoriaJson>>(pageResult.Items);
 
-            var totalReceitasGeral = lista.Sum(x => x.TotalReceitas);
-            var totalDespesasGeral = lista.Sum(x => x.TotalDespesas);
+            var categoriasPageResponse = new Communication.DTOs.PageResultDTO<ResponseTotalCategoriaJson>
+            {
+                Page = pageResult.Page,
+                PageSize = pageResult.PageSize,
+                TotalItems = pageResult.TotalItems,
+                TotalPages = pageResult.TotalPages,
+                Items = listaJson
+            };
 
             return new ResponseTotaisCategoriasJson
             {
-                Categorias = lista,
-                TotalReceitasGeral = totalReceitasGeral,
-                TotalDespesasGeral = totalDespesasGeral,
-                SaldoGeral = totalReceitasGeral - totalDespesasGeral
+                Categorias = categoriasPageResponse,
+                TotalReceitasGeral = totaisGerais.TotalReceitasGeral,
+                TotalDespesasGeral = totaisGerais.TotalDespesasGeral,
+                SaldoGeral = totaisGerais.TotalReceitasGeral - totaisGerais.TotalDespesasGeral
             };
         }
     }

@@ -5,6 +5,7 @@ using GastosResidenciais.Domain.Repositories.Relatorios;
 using GastosResidenciais.Domain.Repositories.Transacoes;
 using GastosResidenciais.Infrastructure.DataAccess;
 using GastosResidenciais.Infrastructure.DataAccess.Repositories;
+using GastosResidenciais.Infrastructure.HostedServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace GastosResidenciais.Infrastructure
         {
             AddRepositories(services);
             AddDbContext(services, configuration);
+            AddHostedServices(services);
         }
 
         private static void AddRepositories(IServiceCollection services)
@@ -33,7 +35,7 @@ namespace GastosResidenciais.Infrastructure
             services.AddScoped<ICategoriaWriteOnlyRepository, CategoriaRepository>();
 
             // Transacao
-            services.AddScoped<ITrancasaoReadOnlyRepository, TransacaoRepository>();
+            services.AddScoped<ITransacaoReadOnlyRepository, TransacaoRepository>();
             services.AddScoped<ITransacaoWriteOnlyRepository, TransacaoRepository>();
 
             // Relatorio
@@ -46,6 +48,11 @@ namespace GastosResidenciais.Infrastructure
             
             services.AddDbContext<GastosResidenciaisDbContext>(options =>
                 options.UseNpgsql(connectionString));
+        }
+
+        private static void AddHostedServices(IServiceCollection services)
+        {
+            services.AddHostedService<DbStartupCheckHostedService>();
         }
     }
 }

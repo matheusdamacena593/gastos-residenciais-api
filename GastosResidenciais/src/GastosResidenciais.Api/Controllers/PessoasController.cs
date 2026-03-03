@@ -1,4 +1,5 @@
-﻿using GastosResidenciais.Application.UseCases.Pessoas.Delete;
+﻿using GastosResidenciais.Application.UseCases.Pessoas.Count;
+using GastosResidenciais.Application.UseCases.Pessoas.Delete;
 using GastosResidenciais.Application.UseCases.Pessoas.GetAll;
 using GastosResidenciais.Application.UseCases.Pessoas.GetById;
 using GastosResidenciais.Application.UseCases.Pessoas.Register;
@@ -6,6 +7,7 @@ using GastosResidenciais.Application.UseCases.Pessoas.Update;
 using GastosResidenciais.Communication.Requests;
 using GastosResidenciais.Communication.Responses;
 using GastosResidenciais.Communication.Responses.Pessoas;
+using GastosResidenciais.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GastosResidenciais.Api.Controllers
@@ -27,16 +29,19 @@ namespace GastosResidenciais.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ResponsePessoasJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PageResultDTO<ResponsePessoaJson>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAll([FromServices] IGetAllPessoasUseCase useCase)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int page,
+            [FromQuery] int pageSize,
+            [FromServices] IGetAllPessoasUseCase useCase)
         {
-            var response = await useCase.Execute();
+            var response = await useCase.Execute(page, pageSize);
 
-            if (response.Pessoas.Any())
-                return Ok(response);
+            if (response.Items == null || response.Items.Count == 0)
+                return NoContent();
 
-            return NoContent();
+            return Ok(response);
         }
 
         [HttpGet]
@@ -78,6 +83,14 @@ namespace GastosResidenciais.Api.Controllers
             await useCase.Execute(id, request);
 
             return NoContent();
+        }
+
+        [HttpGet("count")]
+        [ProducesResponseType(typeof(ResponseCountJson), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Count([FromServices] IGetPessoasCountUseCase useCase)
+        {
+            var response = await useCase.Execute();
+            return Ok(response);
         }
     }
 }

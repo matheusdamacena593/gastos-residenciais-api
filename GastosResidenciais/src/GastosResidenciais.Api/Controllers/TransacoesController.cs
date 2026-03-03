@@ -1,10 +1,11 @@
-﻿using GastosResidenciais.Application.UseCases.Categorias.GetAll;
+﻿using GastosResidenciais.Application.UseCases.Transacoes.Count;
 using GastosResidenciais.Application.UseCases.Transacoes.GetAll;
 using GastosResidenciais.Application.UseCases.Transacoes.GetById;
 using GastosResidenciais.Application.UseCases.Transacoes.Register;
 using GastosResidenciais.Communication.Requests;
 using GastosResidenciais.Communication.Responses;
 using GastosResidenciais.Communication.Responses.Transacoes;
+using GastosResidenciais.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GastosResidenciais.Api.Controllers
@@ -26,16 +27,19 @@ namespace GastosResidenciais.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ResponseTransacoesJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PageResultDTO<ResponseTransacaoJson>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAll([FromServices] IGetAllTransacoesUseCase useCase)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int page,
+            [FromQuery] int pageSize,
+            [FromServices] IGetAllTransacoesUseCase useCase)
         {
-            var response = await useCase.Execute();
+            var response = await useCase.Execute(page, pageSize);
 
-            if (response.Transacoes.Any())
-                return Ok(response);
+            if (response.Items == null || response.Items.Count == 0)
+                return NoContent();
 
-            return NoContent();
+            return Ok(response);
         }
 
         [HttpGet]
@@ -48,6 +52,14 @@ namespace GastosResidenciais.Api.Controllers
         {
             var response = await useCase.Execute(id);
 
+            return Ok(response);
+        }
+
+        [HttpGet("count")]
+        [ProducesResponseType(typeof(ResponseCountJson), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Count([FromServices] IGetTransacoesCountUseCase useCase)
+        {
+            var response = await useCase.Execute();
             return Ok(response);
         }
     }

@@ -1,6 +1,5 @@
 using AutoMapper;
 using GastosResidenciais.Communication.Responses.Relatorios;
-using GastosResidenciais.Domain.Repositories.Pessoas;
 using GastosResidenciais.Domain.Repositories.Relatorios;
 
 namespace GastosResidenciais.Application.UseCases.Relatorios.GetTotaisPessoas
@@ -18,21 +17,28 @@ namespace GastosResidenciais.Application.UseCases.Relatorios.GetTotaisPessoas
             _mapper = mapper;
         }
 
-        public async Task<ResponseTotaisPessoasJson> Execute()
+        public async Task<ResponseTotaisPessoasJson> Execute(int page, int pageSize)
         {
-            var pessoas = await _repository.GetPessoasTotaisAsync();
+            var pageResult = await _repository.GetPessoasTotaisPaginadoAsync(page, pageSize);
+            var totaisGerais = await _repository.GetTotaisGeraisPessoasAsync();
 
-            var lista = _mapper.Map<List<ResponseTotalPessoaJson>>(pessoas);
+            var listaJson = _mapper.Map<List<ResponseTotalPessoaJson>>(pageResult.Items);
 
-            var totalReceitasGeral = lista.Sum(x => x.TotalReceitas);
-            var totalDespesasGeral = lista.Sum(x => x.TotalDespesas);
+            var pessoasPageResponse = new Communication.DTOs.PageResultDTO<ResponseTotalPessoaJson>
+            {
+                Page = pageResult.Page,
+                PageSize = pageResult.PageSize,
+                TotalItems = pageResult.TotalItems,
+                TotalPages = pageResult.TotalPages,
+                Items = listaJson
+            };
 
             return new ResponseTotaisPessoasJson
             {
-                Pessoas = lista,
-                TotalReceitasGeral = totalReceitasGeral,
-                TotalDespesasGeral = totalDespesasGeral,
-                SaldoGeral = totalReceitasGeral - totalDespesasGeral
+                Pessoas = pessoasPageResponse,
+                TotalReceitasGeral = totaisGerais.TotalReceitasGeral,
+                TotalDespesasGeral = totaisGerais.TotalDespesasGeral,
+                SaldoGeral = totaisGerais.TotalReceitasGeral - totaisGerais.TotalDespesasGeral
             };
         }
     }

@@ -1,9 +1,11 @@
-﻿using GastosResidenciais.Application.UseCases.Categorias.GetAll;
+﻿using GastosResidenciais.Application.UseCases.Categorias.Count;
+using GastosResidenciais.Application.UseCases.Categorias.GetAll;
 using GastosResidenciais.Application.UseCases.Categorias.GetById;
 using GastosResidenciais.Application.UseCases.Categorias.Register;
 using GastosResidenciais.Communication.Requests;
 using GastosResidenciais.Communication.Responses;
 using GastosResidenciais.Communication.Responses.Categorias;
+using GastosResidenciais.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GastosResidenciais.Api.Controllers
@@ -25,16 +27,19 @@ namespace GastosResidenciais.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ResponseCategoriasJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PageResultDTO<ResponseCategoriaJson>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAll([FromServices] IGetAllCategoriasUseCase useCase)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int page,
+            [FromQuery] int pageSize, 
+            [FromServices] IGetAllCategoriasUseCase useCase)
         {
-            var response = await useCase.Execute();
+            var response = await useCase.Execute(page, pageSize);
 
-            if (response.Categorias.Any())
-                return Ok(response);
+            if (response.Items == null || response.Items.Count == 0)
+                return NoContent();
 
-            return NoContent();
+            return Ok(response);
         }
 
         [HttpGet]
@@ -47,6 +52,14 @@ namespace GastosResidenciais.Api.Controllers
         {
             var response = await useCase.Execute(id);
 
+            return Ok(response);
+        }
+
+        [HttpGet("count")]
+        [ProducesResponseType(typeof(ResponseCountJson), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Count([FromServices] IGetCategoriasCountUseCase useCase)
+        {
+            var response = await useCase.Execute();
             return Ok(response);
         }
     }

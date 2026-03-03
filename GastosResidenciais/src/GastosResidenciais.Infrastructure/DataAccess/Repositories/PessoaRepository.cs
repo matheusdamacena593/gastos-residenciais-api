@@ -1,3 +1,4 @@
+using GastosResidenciais.Domain.DTOs;
 using GastosResidenciais.Domain.Entities;
 using GastosResidenciais.Domain.Repositories.Pessoas;
 using GastosResidenciais.Infrastructure.DataAccess;
@@ -39,12 +40,29 @@ namespace GastosResidenciais.Infrastructure.DataAccess.Repositories
             return true;
         }
 
-        public async Task<List<Pessoa>> GetAll()
+        public async Task<PageResultDTO<Pessoa>> GetAll(int page, int pageSize)
         {
-            return await _dbContext
-                .Pessoas
-                .AsNoTracking()
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var baseQuery = _dbContext.Pessoas.AsNoTracking();
+
+            var totalItems = await baseQuery.CountAsync();
+
+            var items = await baseQuery
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return new PageResultDTO<Pessoa>
+            {
+                Page = page,
+                PageSize = items.Count,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
+                Items = items
+            };
         }
 
         async Task<Pessoa?> IPessoaReadOnlyRepository.GetById(long id)
@@ -72,6 +90,11 @@ namespace GastosResidenciais.Infrastructure.DataAccess.Repositories
         public Task<bool> ExistsById(long id, CancellationToken ct)
         {
             return _dbContext.Pessoas.AsNoTracking().AnyAsync(c => c.Id == id, ct);
+        }
+
+        public async Task<long> CountAsync()
+        {
+            return await _dbContext.Pessoas.LongCountAsync();
         }
     }
 }

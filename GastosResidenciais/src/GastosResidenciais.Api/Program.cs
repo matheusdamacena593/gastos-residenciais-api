@@ -21,6 +21,22 @@ namespace GastosResidenciais.Api
             builder.Services.AddInfrastruture(builder.Configuration);
             builder.Services.AddApplication();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("FrontendLocal", policy =>
+                {
+                    policy
+                        .WithOrigins(
+                            "http://localhost:3000",
+                            "https://localhost:3000",
+                            "http://127.0.0.1:3000"
+                        )
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    // .AllowCredentials();
+                });
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -30,6 +46,8 @@ namespace GastosResidenciais.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("FrontendLocal");
 
             app.UseAuthorization();
 

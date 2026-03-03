@@ -1,3 +1,4 @@
+using GastosResidenciais.Domain.DTOs;
 using GastosResidenciais.Domain.Entities;
 using GastosResidenciais.Domain.Enums;
 using GastosResidenciais.Domain.Repositories.Categorias;
@@ -39,12 +40,31 @@ namespace GastosResidenciais.Infrastructure.DataAccess.Repositories
             return true;
         }
 
-        public async Task<List<Categoria>> GetAll()
+        public async Task<PageResultDTO<Categoria>> GetAll(int page, int pageSize)
         {
-            return await _dbContext
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var query = _dbContext
                 .Categorias
                 .AsNoTracking()
+                .OrderBy(p => p.Id);
+
+            var totalItems = await query.CountAsync();
+
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return new PageResultDTO<Categoria>
+            {
+                Page = page,
+                PageSize = items.Count,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
+                Items = items
+            };
         }
 
         public async Task<Categoria?> GetById(long id)
@@ -64,6 +84,11 @@ namespace GastosResidenciais.Infrastructure.DataAccess.Repositories
                 .Where(c => c.Id == id)
                 .Select(c => (FinalidadeCategoriaEnum?)c.Finalidade)
                 .FirstOrDefaultAsync(ct);
+        }
+
+        public async Task<long> CountAsync()
+        {
+            return await _dbContext.Categorias.LongCountAsync();
         }
     }
 }

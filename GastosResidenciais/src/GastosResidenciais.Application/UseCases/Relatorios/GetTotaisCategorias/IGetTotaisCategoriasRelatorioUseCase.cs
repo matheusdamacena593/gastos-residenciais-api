@@ -4,6 +4,6 @@ namespace GastosResidenciais.Application.UseCases.Relatorios.GetTotaisCategorias
 {
     public interface IGetTotaisCategoriasRelatorioUseCase
     {
-        Task<ResponseTotaisCategoriasJson> Execute();
+        Task<ResponseTotaisCategoriasJson> Execute(int page, int pageSize);
     }
 }
