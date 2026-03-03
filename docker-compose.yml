@@ -22,8 +22,8 @@ services:
     build:
       context: .
       dockerfile: GastosResidenciais/src/GastosResidenciais.Api/Dockerfile
-    ports:
-      - "5287:8080"
+    expose:
+      - "8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__Connection: Host=postgres;Port=5432;Database=gastosresidenciais_db;Username=postgres;Password=localhost123
