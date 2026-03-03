@@ -1,0 +1,62 @@
+.transacoesPage {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.transacoesHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.transacoesTitle {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.transacoesSubtitle {
+  margin: 6px 0 0 0;
+  opacity: 0.75;
+}
+
+.transacoesHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.colSmall {
+  width: 160px;
+}
+
+.muted {
+  opacity: 0.75;
+}
+
+.inputError {
+  border-color: rgba(220, 53, 69, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+}
+
+.fieldError {
+  color: #b02a37;
+  font-weight: 700;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.alertError {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  color: #b02a37;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+
+  ul {
+    margin: 8px 0 0 18px;
+  }
+}

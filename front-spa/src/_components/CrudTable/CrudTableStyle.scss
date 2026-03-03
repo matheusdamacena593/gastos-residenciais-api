@@ -1,0 +1,157 @@
+.crudCard {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.crudCardHeader {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+}
+
+.crudHeaderLeft, .crudHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crudTableWrap {
+  width: 100%;
+  overflow: auto;
+}
+
+.crudTable {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: 13px;
+    opacity: 0.75;
+    font-weight: 900;
+  }
+}
+
+.crudColActions {
+  width: 140px;
+  text-align: right;
+}
+
+.crudRowActions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.crudLoadingState {
+  padding: 28px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 800;
+  opacity: 0.85;
+}
+
+.crudSpinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-top-color: rgba(0,0,0,0.75);
+  animation: crudSpin 0.8s linear infinite;
+}
+@keyframes crudSpin {
+  to { transform: rotate(360deg); }
+}
+
+.crudEmptyState {
+  padding: 28px 14px;
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.crudEmptyTitle {
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.crudEmptyText {
+  opacity: 0.75;
+}
+
+.crudEmptyAction {
+  margin-top: 8px;
+}
+
+.crudMobileList {
+  display: none;
+  padding: 12px;
+  gap: 12px;
+}
+
+.crudMobileCard {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(11,11,13,0.02);
+  display: grid;
+  gap: 10px;
+}
+
+.crudMobileGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.crudMobileRow {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.crudMobileLabel {
+  font-weight: 900;
+  opacity: 0.7;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.crudMobileValue {
+  font-weight: 800;
+  word-break: break-word;
+}
+
+.crudMobileActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .crudTableWrap {
+    display: none;
+  }
+  .crudMobileList {
+    display: grid;
+  }
+  .crudColActions {
+    width: auto;
+  }
+}

@@ -1,0 +1,20 @@
+.customInput {
+  color: #777777;
+  border: 1px solid #93A2B2;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  box-sizing: border-box; 
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  &::placeholder {
+    color: #93A2B2;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #44b4cc;
+  }
+}

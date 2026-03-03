@@ -1,0 +1,11 @@
+@import "bootstrap/dist/css/bootstrap.css";
+
+/* NProgress - cor e espessura */
+#nprogress .bar {
+  background: #000000 !important; /* branco */
+  height: 3px !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff !important;
+}

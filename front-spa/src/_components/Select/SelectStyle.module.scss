@@ -1,0 +1,39 @@
+.wrapper {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-weight: 800;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.select {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  outline: none;
+  background: #fff;
+
+  font-weight: 600;
+}
+
+.select:focus {
+  box-shadow: 0 0 0 3px rgba(68, 180, 204, 0.18);
+  border-color: rgba(68, 180, 204, 0.7);
+}
+
+.selectError {
+  border-color: rgba(220, 53, 69, 0.55);
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+}
+
+.error {
+  color: #b02a37;
+  font-weight: 700;
+  font-size: 12px;
+}

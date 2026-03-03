@@ -1,5 +1,4 @@
 services:
-
   postgres:
     image: postgres:15
     restart: always
@@ -19,24 +18,41 @@ services:
     networks:
       - sail
 
+  api:
+    build:
+      context: .
+      dockerfile: GastosResidenciais/src/GastosResidenciais.Api/Dockerfile
+    ports:
+      - "5287:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Connection: Host=postgres;Port=5432;Database=gastosresidenciais_db;Username=postgres;Password=localhost123
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sail
+
   frontend:
     build:
-      context: ./spa
+      context: ./front-spa
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
-      - ./spa/docker:/usr/src/app/docker
-      - ./spa/public:/usr/src/app/public
-      - ./spa/src:/usr/src/app/src
-      - ./spa/vite.config.ts:/usr/src/app/vite.config.ts
-      - ./spa/.env:/usr/src/app/.env
+      - ./front-spa/docker:/usr/src/app/docker
+      - ./front-spa/public:/usr/src/app/public
+      - ./front-spa/src:/usr/src/app/src
+      - ./front-spa/vite.config.ts:/usr/src/app/vite.config.ts
+      - ./front-spa/.env:/usr/src/app/.env
       - /usr/src/app/node_modules
     networks:
       - sail
     environment:
-      VITE_BASE_URL: https://localhost:7218
+      VITE_BASE_URL: http://localhost:5287/api
       NODE_ENV: development
+    depends_on:
+      - api
     image: react-spa
 
 networks:

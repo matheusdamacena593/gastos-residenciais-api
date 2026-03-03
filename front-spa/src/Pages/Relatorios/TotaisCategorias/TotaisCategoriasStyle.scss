@@ -1,0 +1,123 @@
+.totaisCategoriasPage {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.totaisCategoriasHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.totaisCategoriasTitle {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.totaisCategoriasSubtitle {
+  margin: 6px 0 0 0;
+  opacity: 0.75;
+}
+
+.totaisCategoriasHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alertError {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  color: #b02a37;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+
+  ul {
+    margin: 8px 0 0 18px;
+  }
+}
+
+/* cards de resumo */
+.totaisResumo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.totaisResumoItem {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: grid;
+  gap: 6px;
+
+  span {
+    font-weight: 800;
+    opacity: 0.7;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  strong {
+    font-size: 18px;
+    font-weight: 900;
+  }
+}
+
+@media (max-width: 900px) {
+  .totaisResumo {
+    grid-template-columns: 1fr;
+  }
+}
+
+.colMoney {
+  width: 170px;
+}
+
+.colSmall {
+  width: 160px;
+}
+
+.downloadModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+}
+
+.downloadModal {
+  width: min(520px, calc(100% - 24px));
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.downloadModalActions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+.downloadModalCancel {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.downloadModalCancel:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}

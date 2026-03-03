@@ -1,0 +1,124 @@
+.sidebar-container {
+  width: 280px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  transition: width 0.2s ease;
+  will-change: width;
+}
+
+.sidebar-header {
+  gap: 12px;
+}
+
+.sidebar-brand {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-header-actions {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  height: 34px;
+  width: auto;
+  max-width: 180px;
+  display: block;
+  object-fit: contain;
+}
+
+.sidebar-label {
+  white-space: nowrap;
+}
+
+.sidebar-icon {
+  margin-right: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .sidebar-container.is-collapsed {
+    width: 76px;
+
+    .sidebar-header {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      justify-content: flex-end;
+    }
+
+    .sidebar-brand {
+      display: none;
+    }
+
+    .sidebar-label {
+      display: none;
+    }
+
+    .sidebar-icon {
+      margin-right: 0;
+    }
+
+    .nav-link {
+      justify-content: center !important;
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+    }
+
+    .report-chevron {
+      display: none;
+    }
+
+    .report-submenu {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .sidebar-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1050;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease-in-out;
+    will-change: transform;
+  }
+
+  .sidebar-container.show-sidebar {
+    transform: translateX(0);
+  }
+}
+
+.report-submenu {
+  margin-top: 6px;
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.report-subitem {
+  font-size: 14px;
+  opacity: 0.92;
+}
+
+.report-chevron {
+  transition: transform 0.15s ease;
+  transform-origin: center;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.logout-btn {
+  background: transparent;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background-color: #dc3545;
+    color: #fff;
+  }
+}
